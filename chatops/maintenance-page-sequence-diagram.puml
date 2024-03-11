@@ -1,0 +1,69 @@
+@startuml Update Maintenance Page Sequence Diagram
+
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor BLACK
+
+Actor User as user 
+Participant "Slack" as slack PURPLE
+Participant "Lambda" as lambda YELLOW
+Participant "S3" as s3 GREEN
+
+user -> slack : Invoke slash command
+activate slack
+
+slack -> lambda : Request form 
+activate lambda
+
+lambda -> s3 : Fetch maintenance page
+activate s3
+
+s3 --> lambda : Return maintenance page
+deactivate s3
+
+lambda -> lambda : Build form 
+activate lambda
+
+lambda --> lambda
+deactivate lambda
+
+lambda --> slack : Return form 
+deactivate lambda
+
+slack --> user
+
+user -> slack : Enter details and click submit 
+
+slack -> lambda : Submit form
+activate lambda
+
+lambda -> lambda : Process and validate form data
+activate lambda
+
+lambda --> lambda
+deactivate lambda
+
+lambda -> s3 : Fetch maintenance page
+activate s3
+s3 --> lambda : Return maintenance page
+deactivate s3
+
+lambda -> lambda : Scrape and replace rows in maintenance page 
+activate lambda
+
+lambda --> lambda
+deactivate lambda
+
+lambda -> s3 : Write new maintenance page to bucket
+activate s3
+
+s3 --> lambda
+deactivate s3
+
+lambda --> slack
+deactivate lambda
+
+slack --> user
+deactivate slack
+
+@enduml

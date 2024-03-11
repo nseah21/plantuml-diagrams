@@ -1,0 +1,50 @@
+@startuml Health Alerts Sequence Diagram
+
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor BLACK
+
+Participant "Health" as health WEAK_PINK
+Participant "Eventbridge" as eventbridge STRONG_PINK
+Participant "Formatting Lambda" as lambda YELLOW
+Participant "Forwarding Lambda" as send_to_slack ORANGE
+Participant "Slack" as slack PURPLE
+Actor User as user 
+
+health -> eventbridge : Emit health event
+activate eventbridge
+
+eventbridge -> eventbridge : Match and filter events \nbased on rule
+activate eventbridge
+
+eventbridge --> eventbridge 
+deactivate eventbridge
+
+eventbridge -> lambda : Forward event to target
+deactivate eventbridge
+
+activate lambda
+
+lambda -> lambda : Format event into blocks
+activate lambda
+lambda --> lambda
+deactivate lambda
+
+lambda -> send_to_slack : Send health alert payload 
+deactivate lambda
+activate send_to_slack
+
+send_to_slack -> slack : Forward payload to \n one or more channels
+deactivate send_to_slack
+activate slack
+
+slack -> slack : Display blocks in their \n respective channels
+activate slack 
+
+slack --> slack
+deactivate slack
+slack -> user : Send notification to user
+deactivate slack
+
+
+@enduml

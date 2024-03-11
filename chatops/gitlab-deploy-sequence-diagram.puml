@@ -1,0 +1,73 @@
+@startuml GitLab Deployment Sequence Diagram
+
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor BLACK
+
+Actor Developer as dev 
+Participant "GitLab" as gitlab ORANGE
+Participant "Lambda" as lambda YELLOW
+Participant "Slack" as slack PURPLE
+Actor Supervisor as sup 
+
+dev -> gitlab : Push code 
+activate gitlab
+gitlab -> gitlab : Run jobs 
+activate gitlab
+
+gitlab --> gitlab
+deactivate gitlab
+gitlab --> dev : ID of blocked deployment
+deactivate gitlab 
+
+dev -> slack : Request for deployment approval form
+activate slack
+slack -> lambda : Fetch project data
+activate lambda
+lambda -> gitlab : Invoke GET endpoints 
+activate gitlab
+
+gitlab --> lambda
+deactivate gitlab
+lambda --> slack
+deactivate lambda
+
+slack --> dev : Serve form
+deactivate slack
+
+dev -> slack : Submit form for deployment approval request 
+activate slack
+
+slack -> slack : Persist request on channel
+activate slack
+
+slack --> slack
+deactivate slack
+
+slack --> dev
+deactivate slack
+
+sup -> slack : Click approve or reject
+activate slack
+slack -> lambda : Forward decision to lambda
+activate lambda
+
+lambda -> gitlab : Invoke POST endpoints
+activate gitlab
+
+gitlab --> lambda 
+deactivate gitlab
+
+lambda --> slack
+deactivate lambda
+
+slack --> sup 
+deactivate slack
+
+dev -> gitlab : Manually trigger approved job 
+activate gitlab
+
+gitlab --> dev
+deactivate gitlab
+
+@enduml
