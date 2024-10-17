@@ -8,6 +8,7 @@ Actor User as user
 Participant "Slack" as slack PURPLE
 Participant "Lambda" as lambda YELLOW
 Participant "S3" as s3 GREEN
+Actor Developer as developer 
 
 user -> slack : Invoke slash command
 activate slack
@@ -31,10 +32,24 @@ lambda --> slack : Return form
 deactivate lambda
 
 slack --> user
+deactivate slack
 
 user -> slack : Enter details and click submit 
+activate slack
 
-slack -> lambda : Submit form
+slack -> slack : Persist request on channel
+activate slack
+
+slack --> slack
+deactivate slack
+
+slack --> user
+deactivate slack
+
+developer -> slack : Approve request
+activate slack
+
+slack -> lambda : Forward details to Lambda
 activate lambda
 
 lambda -> lambda : Process and validate form data
@@ -63,7 +78,8 @@ deactivate s3
 lambda --> slack
 deactivate lambda
 
-slack --> user
+slack --> developer
 deactivate slack
+
 
 @enduml

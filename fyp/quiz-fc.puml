@@ -1,0 +1,44 @@
+' @startuml Quiz Creation Flow Control Diagram
+' start
+' :Start Quiz Creation;
+' if (Select Automatic Generation) then (yes)
+'     :Use Automatic Quiz Generation Page;
+'     if (Prefer RAG) then (yes)
+'         :Upload File in Form;
+'     else (no)
+'         :Omit File;
+'     endif
+' else (no)
+'     :Use Manual Quiz
+'     Creation Page;
+' endif
+' :End;
+' stop
+' @enduml
+
+@startuml Quiz Creation Activity Diagram
+
+skinparam Shadowing false
+skinparam ArrowColor #000000
+
+start
+:User navigates to the quiz dashboard;
+:CustomAIzEd displays the options to either automatically generate or manually create a quiz;
+
+'Since the beta syntax does not support placing the condition outside the
+'diamond we place it as the true branch instead.
+
+if () then ([automatically generate])
+    :User enters the topic and number of questions to generate;
+    if () then ([use RAG])
+    :User uploads a file for RAG;
+    else ([else])
+    :User omits the file from the form submission;
+    endif
+    :Questions are bulk generated and customised;
+else ([manually create])
+    :User inputs and customises each question one-by-one;
+endif
+    :Quiz questions are persisted to the database;
+stop
+@enduml

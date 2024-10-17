@@ -1,0 +1,118 @@
+@startuml Update Maintenance Page Sequence Diagram
+
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor BLACK
+
+Actor Student as stu
+Participant "Frontend" as fe PURPLE
+Participant "Backend" as be YELLOW
+Participant "AI Server" as py GREEN
+Participant "MongoDB" as db LIGHT_BLUE
+Actor Instructor as ins
+
+ins -> fe: Enter details in crossword creation page
+activate fe
+
+fe -> be: Submit request to generate pairs of crossword answers and clues
+activate be
+
+be -> py: Forward request 
+activate py
+
+py -> py: Invoke LLM
+activate py
+
+py --> py: Generate crossword tuples
+deactivate py
+
+py --> be: Return tuples in JSON format
+deactivate py
+
+be --> fe: Forward request
+deactivate be
+
+opt Instructor wants to refine the tuples
+    fe -> fe: Edit generated tuples
+    activate fe
+
+    fe --> fe
+    deactivate fe
+end
+
+fe -> be: Submit request to generate crossword grid layout
+activate be
+
+be -> be: Create random layout from tuples
+be --> be: Generate JSON object representing word positions and directions
+deactivate be
+
+be --> fe: Return grid layout
+deactivate be
+
+fe -> fe: Render crossword based on logical layout
+activate fe
+
+fe --> fe: 
+deactivate fe
+
+loop while Instructor is not satisfied with the layout
+    fe -> be: Submit request to regenerate crossword grid layout
+    activate be
+
+    be -> be: Recreate random layout from tuples
+    be --> be: Generate JSON object representing word positions and directions
+    deactivate be
+
+    be --> fe: Return grid layout
+    deactivate be
+
+    fe -> fe: Re-render crossword based on logical layout
+    activate fe
+
+    fe --> fe: 
+    deactivate fe
+end
+
+fe -> be: Submit request to save crossword
+activate be
+
+be -> db: Create crossword object and save to DB
+activate db
+
+db -> db: Persist object
+activate db
+
+db --> db:
+deactivate db
+
+db --> be:
+deactivate db
+
+be --> fe:
+deactivate be
+
+fe --> ins
+deactivate fe
+
+stu -> fe: Attempt crossword
+activate fe
+
+fe -> fe: Validate answers
+activate fe
+
+fe --> fe:
+deactivate fe
+
+alt Student correctly solves the crossword
+    fe -> fe: Congratulate student 
+    activate fe
+
+    fe --> fe: 
+    deactivate fe
+end
+
+fe --> stu:
+deactivate fe
+
+@enduml

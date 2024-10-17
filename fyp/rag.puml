@@ -1,0 +1,74 @@
+@startuml Update Maintenance Page Sequence Diagram
+
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor BLACK
+
+Actor Instructor as ins
+Participant "Frontend" as fe PURPLE
+Participant "Backend" as be YELLOW
+Participant "AI Server" as py GREEN
+Participant "MongoDB" as db LIGHT_BLUE
+
+ins -> fe: Enter quiz details in automatic quiz creation page
+activate fe
+
+fe -> be: Submit request to generate quiz
+activate be
+
+be -> py: Forward request
+activate py
+
+alt Instructor uploaded a file with his request
+    py -> py: Perform vector embedding on the uploaded file and persist vector store
+    activate py
+
+    deactivate py
+
+    py -> py: Perform RAG using knowledge base
+    activate py
+
+    deactivate py
+else Instructor did not upload any file
+    py -> py: Generate questions and answers using chat completions API
+    activate py
+
+    deactivate py
+end
+
+py --> be: Return generated questions and answer options
+deactivate py
+
+be --> fe
+deactivate be
+
+fe -> fe: Render questions and answer options 
+activate fe
+
+fe --> fe:
+deactivate fe
+
+opt Instructor wants to delete some questions
+    ins -> fe: Delete one or more questions
+
+    fe -> fe: Remove questions 
+    activate fe
+    
+    fe --> fe: Render updated question set
+    deactivate fe
+end
+
+fe -> be: Submit request to save quiz
+activate be
+
+be -> db: Create crossword object and save to DB
+activate db
+
+db --> be: Persist object
+deactivate db
+
+be --> fe: 
+deactivate be
+deactivate fe
+
+@enduml

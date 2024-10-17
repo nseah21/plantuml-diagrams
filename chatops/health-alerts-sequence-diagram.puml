@@ -9,7 +9,7 @@ Participant "Eventbridge" as eventbridge STRONG_PINK
 Participant "Formatting Lambda" as lambda YELLOW
 Participant "Forwarding Lambda" as send_to_slack ORANGE
 Participant "Slack" as slack PURPLE
-Actor User as user 
+Actor Developer as user 
 
 health -> eventbridge : Emit health event
 activate eventbridge
@@ -43,7 +43,7 @@ activate slack
 
 slack --> slack
 deactivate slack
-slack -> user : Send notification to user
+slack -> user : Send notification to developer
 deactivate slack
 
 
