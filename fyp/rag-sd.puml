@@ -45,16 +45,16 @@ deactivate be
 fe -> fe: Render questions and answer options 
 activate fe
 
-fe --> fe:
+' fe --> fe:
 deactivate fe
 
 opt Instructor wants to delete some questions
-    ins -> fe: Delete one or more questions
+    ' ins -> fe: Delete one or more questions
 
-    fe -> fe: Remove questions 
+    fe -> fe: Remove one or more questions 
     activate fe
     
-    fe --> fe: Render updated question set
+    ' fe --> fe: Render updated question set
     deactivate fe
 end
 
@@ -69,6 +69,8 @@ deactivate db
 
 be --> fe: 
 deactivate be
+
+fe --> ins:
 deactivate fe
 
 @enduml

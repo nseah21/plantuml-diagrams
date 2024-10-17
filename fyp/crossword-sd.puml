@@ -36,7 +36,7 @@ opt Instructor wants to refine the tuples
     fe -> fe: Edit generated tuples
     activate fe
 
-    fe --> fe
+    ' fe --> fe
     deactivate fe
 end
 
@@ -44,7 +44,9 @@ fe -> be: Submit request to generate crossword grid layout
 activate be
 
 be -> be: Create random layout from tuples
-be --> be: Generate JSON object representing word positions and directions
+activate be
+
+' be --> be: Generate JSON object representing word positions and directions
 deactivate be
 
 be --> fe: Return grid layout
@@ -53,7 +55,7 @@ deactivate be
 fe -> fe: Render crossword based on logical layout
 activate fe
 
-fe --> fe: 
+' fe --> fe: 
 deactivate fe
 
 loop while Instructor is not satisfied with the layout
@@ -61,7 +63,8 @@ loop while Instructor is not satisfied with the layout
     activate be
 
     be -> be: Recreate random layout from tuples
-    be --> be: Generate JSON object representing word positions and directions
+    activate be
+    ' be --> be: Generate JSON object representing word positions and directions
     deactivate be
 
     be --> fe: Return grid layout
@@ -70,7 +73,7 @@ loop while Instructor is not satisfied with the layout
     fe -> fe: Re-render crossword based on logical layout
     activate fe
 
-    fe --> fe: 
+    ' fe --> fe: 
     deactivate fe
 end
 
@@ -101,14 +104,14 @@ activate fe
 fe -> fe: Validate answers
 activate fe
 
-fe --> fe:
+' fe --> fe:
 deactivate fe
 
 alt Student correctly solves the crossword
     fe -> fe: Congratulate student 
     activate fe
 
-    fe --> fe: 
+    ' fe --> fe: 
     deactivate fe
 end
 
