@@ -1,4 +1,4 @@
-@startuml Quiz RAG Sequence Diagram
+@startuml quiz-rag-sequence-diagram
 
 !include style.puml
 skinparam arrowThickness 1.1

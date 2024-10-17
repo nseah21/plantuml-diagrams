@@ -1,4 +1,4 @@
-@startuml Crossword Creation Sequence Diagram
+@startuml crossword-creation-sequence-diagram
 
 !include style.puml
 skinparam arrowThickness 1.1
@@ -29,7 +29,7 @@ deactivate py
 py --> be: Return tuples in JSON format
 deactivate py
 
-be --> fe: Forward request
+be --> fe: 
 deactivate be
 
 opt Instructor wants to refine the tuples

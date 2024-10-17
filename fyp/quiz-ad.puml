@@ -1,4 +1,4 @@
-@startuml Quiz Creation Activity Diagram
+@startuml quiz-creation-activity-diagram
 
 skinparam Shadowing false
 skinparam ArrowColor #000000
