@@ -58,6 +58,33 @@ opt Instructor wants to delete some questions
     deactivate fe
 end
 
+fe -> be: Submit request to personalise questions
+activate be
+
+be -> py: Forward request
+activate py
+
+py -> py: Personalise question context for each major 
+activate py
+
+deactivate py
+
+py --> be:
+deactivate py
+
+be --> fe:
+deactivate be
+
+opt Instructor wants to delete some questions after personalisation
+    ' ins -> fe: Delete one or more questions
+
+    fe -> fe: Remove one or more questions 
+    activate fe
+    
+    ' fe --> fe: Render updated question set
+    deactivate fe
+end
+
 fe -> be: Submit request to save quiz
 activate be
 

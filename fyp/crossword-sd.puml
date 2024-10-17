@@ -86,7 +86,7 @@ activate db
 db -> db: Persist object
 activate db
 
-db --> db:
+' db --> db:
 deactivate db
 
 db --> be:
