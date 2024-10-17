@@ -1,4 +1,4 @@
-@startuml Update Maintenance Page Sequence Diagram
+@startuml Crossword Creation Sequence Diagram
 
 !include style.puml
 skinparam arrowThickness 1.1

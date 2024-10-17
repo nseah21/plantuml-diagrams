@@ -1,21 +1,3 @@
-' @startuml Quiz Creation Flow Control Diagram
-' start
-' :Start Quiz Creation;
-' if (Select Automatic Generation) then (yes)
-'     :Use Automatic Quiz Generation Page;
-'     if (Prefer RAG) then (yes)
-'         :Upload File in Form;
-'     else (no)
-'         :Omit File;
-'     endif
-' else (no)
-'     :Use Manual Quiz
-'     Creation Page;
-' endif
-' :End;
-' stop
-' @enduml
-
 @startuml Quiz Creation Activity Diagram
 
 skinparam Shadowing false
