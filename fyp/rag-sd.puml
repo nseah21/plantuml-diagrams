@@ -45,18 +45,28 @@ deactivate be
 fe -> fe: Render questions and answer options 
 activate fe
 
-' fe --> fe:
+' fe --> fe: Skibidi toilet
+deactivate fe
+
+fe --> ins:
 deactivate fe
 
 opt Instructor wants to delete some questions
-    ' ins -> fe: Delete one or more questions
+    ins -> fe: Delete one or more questions
+    activate fe
 
-    fe -> fe: Remove one or more questions 
+    fe -> fe: Remove one or more questions from state
     activate fe
     
     ' fe --> fe: Render updated question set
     deactivate fe
+
+    fe --> ins: 
+    deactivate fe
 end
+
+ins -> fe: Click on button to personalise questions
+activate fe
 
 fe -> be: Submit request to personalise questions
 activate be
@@ -75,15 +85,25 @@ deactivate py
 be --> fe:
 deactivate be
 
+fe --> ins:
+deactivate fe
+
 opt Instructor wants to delete some questions after personalisation
-    ' ins -> fe: Delete one or more questions
+    ins -> fe: Delete one or more questions
+    activate fe
 
     fe -> fe: Remove one or more questions 
     activate fe
     
     ' fe --> fe: Render updated question set
     deactivate fe
+
+    fe --> ins:
+    deactivate fe
 end
+
+ins -> fe: Click on button to save quiz
+activate fe
 
 fe -> be: Submit request to save quiz
 activate be
