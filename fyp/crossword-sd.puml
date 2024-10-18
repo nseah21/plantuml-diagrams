@@ -4,14 +4,14 @@
 skinparam arrowThickness 1.1
 skinparam arrowColor BLACK
 
-Actor Student as stu
+Actor Instructor as ins
 Participant "Frontend" as fe PURPLE
 Participant "Backend" as be YELLOW
 Participant "AI Server" as py GREEN
 Participant "MongoDB" as db LIGHT_BLUE
-Actor Instructor as ins
+Actor Student as stu
 
-ins -> fe: Enter details in crossword creation page
+ins -> fe: Submit details in crossword creation page
 activate fe
 
 fe -> be: Submit request to generate pairs of crossword answers and clues
@@ -32,13 +32,25 @@ deactivate py
 be --> fe: 
 deactivate be
 
+fe --> ins:
+deactivate fe
+
 opt Instructor wants to refine the tuples
-    fe -> fe: Edit generated tuples
+    ins -> fe: Edit generated tuples
+    activate fe
+
+    fe -> fe: Update tuple state
     activate fe
 
     ' fe --> fe
     deactivate fe
+
+    fe --> ins:
+    deactivate fe
 end
+
+ins -> fe: Click on button to generate crossword grid layout
+activate fe
 
 fe -> be: Submit request to generate crossword grid layout
 activate be
@@ -55,11 +67,17 @@ deactivate be
 fe -> fe: Render crossword based on logical layout
 activate fe
 
+fe --> ins: 
+deactivate fe
+
 ' fe --> fe: 
 deactivate fe
 
 loop while Instructor is not satisfied with the layout
-    fe -> be: Submit request to regenerate crossword grid layout
+    ins -> fe: Click on button to regenerate crossword layout
+    activate fe
+
+    fe -> be: Submit request to regenerate crossword layout
     activate be
 
     be -> be: Recreate random layout from tuples
@@ -73,9 +91,15 @@ loop while Instructor is not satisfied with the layout
     fe -> fe: Re-render crossword based on logical layout
     activate fe
 
+    fe --> ins:
+    deactivate fe
+
     ' fe --> fe: 
     deactivate fe
 end
+
+ins -> fe: Click on button to save crossword
+activate fe
 
 fe -> be: Submit request to save crossword
 activate be
