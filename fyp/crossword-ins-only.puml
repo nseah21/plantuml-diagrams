@@ -1,0 +1,101 @@
+@startuml crossword-creation-instructor-sequence-diagram
+
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor BLACK
+
+Actor Instructor as ins
+Participant "Frontend" as fe PURPLE
+Participant "Backend" as be YELLOW
+Participant "AI Server" as py GREEN
+Participant "MongoDB" as db LIGHT_BLUE
+' Actor Student as stu
+
+ins -> fe: Submit details in crossword creation page
+activate fe
+
+fe -> be: Submit request to generate pairs of crossword answers and clues
+activate be
+
+be -> py: Forward request 
+activate py
+
+py -> py: Invoke LLM
+activate py
+
+py --> py: Generate crossword tuples
+deactivate py
+
+py --> be: Return tuples in JSON format
+deactivate py
+
+be --> fe: 
+deactivate be
+
+fe --> ins:
+deactivate fe
+
+opt Instructor wants to refine the tuples
+    ins -> fe: Edit generated tuples
+    activate fe
+
+    fe -> fe: Update tuple state
+    activate fe
+
+    ' fe --> fe
+    deactivate fe
+
+    fe --> ins:
+    deactivate fe
+end
+
+loop while no crossword layout generated or Instructor is not satisfied with the current layout
+    ins -> fe: Click on button to generate crossword layout
+    activate fe
+
+    fe -> be: Submit request to generate crossword layout
+    activate be
+
+    be -> be: create random layout from tuples
+    activate be
+    ' be --> be: Generate JSON object representing word positions and directions
+    deactivate be
+
+    be --> fe: Return grid layout
+    deactivate be
+
+    fe -> fe: Re-render crossword based on logical layout
+    activate fe
+
+    fe --> ins:
+    deactivate fe
+
+    ' fe --> fe: 
+    deactivate fe
+end
+
+ins -> fe: Click on button to save crossword
+activate fe
+
+fe -> be: Submit request to save crossword
+activate be
+
+be -> db: Create crossword object and save to DB
+activate db
+
+db -> db: Persist object
+activate db
+
+' db --> db:
+deactivate db
+
+db --> be:
+deactivate db
+
+be --> fe:
+deactivate be
+
+fe --> ins
+deactivate fe
+
+@enduml
